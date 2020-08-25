@@ -1,9 +1,3 @@
--- !preview conn=con
--- Last Edited June 9, 2020
-/*
-This pulls the table enroll.cw_subject
-*/
-
 WITH enrolled_students AS (
        SELECT DISTINCT a.sfrstcr_term_code,
               a.sfrstcr_pidm
@@ -41,7 +35,11 @@ WITH enrolled_students AS (
   admit_app AS (
       SELECT a.sfrstcr_term_code,
              a.sgbstdn_pidm,
-             b.*
+             b.sabsupl_pidm,
+             b.sabsupl_term_code_entry,
+             b.sabsupl_cnty_code_admit,
+             b.sabsupl_stat_code_admit,
+             b.sabsupl_natn_code_admit
         FROM student_list a
    LEFT JOIN sabsupl b
           ON a.sgbstdn_pidm = b.sabsupl_pidm
@@ -132,7 +130,12 @@ WITH enrolled_students AS (
            r.year_one_cum_gpa,
            r.year_two_cum_gpa
            /* The following subquery limits population to first-time freshmen students. */
-      FROM (SELECT aa.*
+      FROM (SELECT aa.sfrstcr_term_code,
+                   aa.fall_up_one,
+                   aa.fall_up_two,
+                   aa.sgbstdn_pidm,
+                   aa.sgbstdn_styp_code,
+                   aa.fterm_ind
               FROM student_list aa
              WHERE aa.fterm_ind = 'Y'
                AND aa.sgbstdn_styp_code ='F') a
@@ -181,4 +184,5 @@ WITH enrolled_students AS (
        AND a.sfrstcr_term_code = q.sfrstcr_term_code
  LEFT JOIN gpa_data r
         ON a.sgbstdn_pidm = r.sgbstdn_pidm
-       AND a.sfrstcr_term_code = r.sfrstcr_term_code
+       AND a.sfrstcr_term_code = r.sfrstcr_term_code;
+
