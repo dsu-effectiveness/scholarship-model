@@ -1,3 +1,9 @@
+-- !preview conn=con
+-- Last Edited June 9, 2020
+/*
+This pulls the table enroll.cw_subject
+*/
+
 WITH enrolled_students AS (
        SELECT DISTINCT a.sfrstcr_term_code,
               a.sfrstcr_pidm
@@ -175,4 +181,4 @@ WITH enrolled_students AS (
        AND a.sfrstcr_term_code = q.sfrstcr_term_code
  LEFT JOIN gpa_data r
         ON a.sgbstdn_pidm = r.sgbstdn_pidm
-       AND a.sfrstcr_term_code = r.sfrstcr_term_code;
+       AND a.sfrstcr_term_code = r.sfrstcr_term_code
