@@ -69,13 +69,13 @@ WITH enrolled_students AS (
              WHERE aa.fterm_ind = 'Y'
                AND aa.sgbstdn_styp_code ='F') a
  LEFT JOIN (SELECT bb.sortest_pidm,
-                   MAX(bb.sortest_test_score) AS sortest_test_score
+                   MAX(TO_NUMBER(bb.sortest_test_score)) AS sortest_test_score
               FROM sortest bb
              WHERE bb.sortest_tesc_code IN ('A05')
           GROUP BY bb.sortest_pidm) b
         ON a.sgbstdn_pidm = b.sortest_pidm
  LEFT JOIN (SELECT cc.sortest_pidm,
-                   MAX(cc.sortest_test_score) AS sortest_test_score
+                   MAX(TO_NUMBER(cc.sortest_test_score)) AS sortest_test_score
               FROM sortest cc
              WHERE cc.sortest_tesc_code IN ('A02N','A02')
           GROUP BY cc.sortest_pidm) c
