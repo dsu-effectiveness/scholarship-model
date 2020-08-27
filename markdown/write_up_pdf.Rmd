@@ -1,0 +1,65 @@
+---
+title: |
+  ![](dsu_header.png){width=7in}  
+output: 
+  pdf_document:
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+geometry: margin=1in,headheight=0pt,headsep=0pt
+header-includes:
+  - \addtolength{\topmargin}{-100pt}
+  - \pagenumbering{gobble}
+---
+
+```{r libraries, echo = FALSE, message = FALSE}
+library(here)
+library(tidyverse)
+library(gt)
+library(kableExtra)
+library(ggplot2)
+library(scales)
+library(ggthemes)
+library(caTools)
+```
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(fig.width = 8, collapse = TRUE, echo = FALSE, message = FALSE)
+```
+
+
+# Base scholarship model
+
+### DSU will marginally improve its scholarship awarding criteria by switching to a model based on high-school GPA and high-school class rank.
+
+- The new model uses high-school GPA and class rank to predict retention or graduation by fall semester two years after the student enters DSU.
+- We compared this model with similar models using ACT score alone, ACT score plus high-school GPA (the index score, our current method), and high-school GPA alone. 
+- The GPA + Rank model performed best.
+
+## Methods and results
+
+We based our models on data from fall semester incoming students from 2012 to 2018. We trained the models on the data from 2012 to 2017, and tested the models on the 2018 cohort. We created the models using logistic regression with ten-fold cross validation. All models were created using the same pre-processing techniques. We used AUC to compare the performance of each of the models.
+
+
+### AUC comparisons between models
+
+An AUC score will be between .5 and 1. You can generally think of an AUC score as a grade. 0.9 and above being an A, 0.8-0.89 a B, and so on. 
+
+| Model           |      AUC      |
+|----------------:|:--------------|
+| **GPA + Rank**  | 0.6830406     |
+| Index Score     | 0.6798872     |
+| ACT alone       | 0.6276709     |
+
+## Suggestions for further work
+
+### Near term
+
+The GPA + Rank model outputs a number between 0 and 1 indicating the probability that a student will either graduate or be retained by the fall semester two years after their initial fall semester. The Institutional Effectiveness Office should work with the Financial Aid Office to determine cut scores for levels of award and the financial impact on the institution. 
+
+
+### Long term
+
+DSU should investigate methods for improving the AUC score for the model to at least 0.7. Additionally, the University should clarify and align the outcome of the model with campus  strategic goals. 
+
