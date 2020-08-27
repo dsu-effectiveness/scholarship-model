@@ -166,7 +166,7 @@ WITH enrolled_students(sfrstcr_term_code, sfrstcr_pidm)
  LEFT JOIN gorrace e
         ON d.race_cdes = e.gorrace_race_cde
  LEFT JOIN (SELECT ff.sortest_pidm,
-                   MAX(ff.sortest_test_score) AS sortest_test_score
+                   MAX(TO_NUMBER(ff.sortest_test_score)) AS sortest_test_score
               FROM sortest ff
              WHERE ff.sortest_tesc_code IN ('A02N','A02')
           GROUP BY ff.sortest_pidm) f
