@@ -102,6 +102,12 @@ colAUC(index_predictions$pred[2], index_predictions$outcome, plotROC = TRUE)
 # AUC
 index_mod
 
+# Coefficients
+index_mod$finalModel
+
+# Summary Statistics
+coef(summary(index_mod$finalModel))
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                      ACT Math
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -164,16 +170,20 @@ rank_mod
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 rank_gpa_train <- model_base %>% 
-  filter(year != '2018') 
+  filter(year != '2018') %>% 
+  as.data.frame()
 
 rank_gpa_test <- model_base %>% 
   filter(year == '2018')
+
+preProcValues  <- preProcess(rank_gpa_train, method = 'BoxCox')
 
 rank_gpa_mod <- train(
   outcome ~ sorhsch_percentile + hs_gpa,
   data = rank_gpa_train,
   method = "glm",
   family = "binomial",
+  preProcess = c('BoxCox', 'center', 'scale'),
   trControl = fitControl
 )
 
@@ -186,3 +196,38 @@ colAUC(rank_gpa_predictions$pred[2], rank_gpa_predictions$outcome, plotROC = TRU
 
 # AUC
 rank_gpa_mod
+
+# Coefficients
+rank_gpa_mod$finalModel
+
+# Summary Statistics
+coef(summary(rank_gpa_mod$finalModel))
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#                     GPA alone
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+gpa_train <- model_base %>% 
+  filter(year != '2018') 
+
+gpa_test <- model_base %>% 
+  filter(year == '2018')
+
+gpa_mod <- train(
+  outcome ~ hs_gpa,
+  data = gpa_train,
+  method = "glm",
+  family = "binomial",
+  preProcess = c('BoxCox'),
+  trControl = fitControl
+)
+
+summary(gpa_mod)
+
+gpa_predictions <- modelr::add_predictions(gpa_test, gpa_mod, var = 'pred', type = 'prob')
+
+# ROC Curve
+colAUC(gpa_predictions$pred[2], gpa_predictions$outcome, plotROC = TRUE)
+
+# AUC
+gpa_mod
