@@ -44,9 +44,9 @@ We based our models on data from fall semester incoming students from 2012 to 20
 
 ### AUC comparisons between models
 
-An AUC score will be between .5 and 1. Higher is better.
+AUC measures how effectively a model distinguishes between successful students and students who drop out. The higher the AUC, the better the model is at separating successful students from unsuccessful students. An AUC score will be between .5 and 1. 
 
-| Model           |      AUC      |
+| Model           | AUC           |
 |----------------:|:--------------|
 | GPA + Rank      | 0.6830406     |
 | Index Score     | 0.6798872     |
